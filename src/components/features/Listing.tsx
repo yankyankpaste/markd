@@ -39,14 +39,12 @@ export const Listing = (props: ListingPropTypes) => {
           </Div>
         </Div>
       </Status>
-
       <Status if={map.status === "empty"}>
         <Div column center middle>
           <Text>No bookmarks have been created yet</Text>
           {/* create bookmark button */}
         </Div>
       </Status>
-
       <Status if={map.status === "error"}>
         <Div column center middle>
           <Text>No bookmarks have been created yet</Text>
@@ -64,29 +62,40 @@ const useListing = (props: ListingPropTypes) => {
 
   const [status, setStatus] = useState<Status>("initial");
   const [items, setItems] = useState<Bookmark[]>([]);
+  const [filteredItems, setFilteredItems] = useState<Bookmark[]>([]);
 
   switch (status) {
     case "initial":
       // feature: if search param is added, determine selected or current page...
-      try {
+      new Promise(resolve => {
         const storage = localStorage.getItem("bookmarks");
         const bookmarks = JSON.parse(storage);
         setItems(bookmarks);
-        bookmarks.length ? setStatus("items") : setStatus("empty");
-      } catch (e) {
-        setStatus("error");
-      }
+
+        resolve(bookmarks);
+      })
+        .then(bookmarks => {
+          // apply filter here???
+          const filter = bookmarks;
+          setFilteredItems(filter);
+          filter.length ? setStatus("items") : setStatus("empty");
+          // filter out bookmarks from search??
+        })
+        .catch(e => {
+          setStatus("error");
+        });
+
       break;
 
     case "empty":
       // await for localstorage update... need hook for this
-      if (items.length > 0) {
+      if (filteredItems.length > 0) {
         setStatus("items");
       }
       break;
 
     case "items":
-      if (items.length === 0) {
+      if (filteredItems.length === 0) {
         setStatus("empty");
       }
       break;
