@@ -6,15 +6,26 @@ import "./App.css";
 import { AsciiLogo } from "resource/logo";
 import { ContextReplacementPlugin } from "webpack";
 import { CreateBookmarkCard } from "components/features/CreateBookmarkCard";
+import { Heading } from "components/features/Heading";
+import { Listing } from "components/features/Listing";
+import { Footer } from "components/features/Footer";
 
-export const App = (props) => {
+export const App = props => {
   const { content, states } = useApp(props);
   useOnce(() => {
     console.log(AsciiLogo);
   });
   return (
     <Div expand padding={50} column gap={50} background="--black-x-dark">
-      <CreateBookmarkCard />
+      <Heading />
+
+      {/* listing page  */}
+      <Listing />
+
+      {/* welcome page?? */}
+
+      {/* signin page?? */}
+      <Footer />
     </Div>
   );
 };
@@ -23,7 +34,7 @@ function useApp(props) {
   return {
     content: {},
     onEvent: () => {},
-    states: {},
+    states: {}
   };
 }
 
