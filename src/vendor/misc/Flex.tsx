@@ -7,10 +7,10 @@ import { createElement } from "react";
 import { useSpring, animated, interpolate, useTransition, config, useChain } from "react-spring";
 // import { motion } from "framer-motion";
 
-const withDynamicTag = (Component) => {
+const withDynamicTag = Component => {
   const bucket = Object.create(null);
 
-  const DynamicTag = (props) => {
+  const DynamicTag = props => {
     const { tag } = props;
 
     if (typeof tag !== "string" || !styled.hasOwnProperty(tag)) {
@@ -33,21 +33,21 @@ const withDynamicTag = (Component) => {
   return DynamicTag;
 };
 
-const StackContainer = styled.div.attrs((props) => ({
+const StackContainer = styled.div.attrs(props => ({
   style: {
     width: props.expand ? "100%" : props.width || "auto",
     height: props.expand ? "100%" : props.height || "auto",
     transform: `scale(${props.scale || 1}) translate(${
       props.position ? `${props.position.x}px, ${props.position.y}px` : `0,0`
-    }) `,
-  },
+    }) `
+  }
 }))`
   // Flex styling
   display: flex;
 
-  flex-direction: ${(props) => (props.column ? "column" : "row")};
+  flex-direction: ${props => (props.column ? "column" : "row")};
 
-  align-items: ${(props) => {
+  align-items: ${props => {
     if (props.column) {
       if (props.left) return "flex-start";
       if (props.right) return "flex-end";
@@ -61,7 +61,7 @@ const StackContainer = styled.div.attrs((props) => ({
     }
   }};
 
-  justify-content: ${(props) => {
+  justify-content: ${props => {
     if (props.spaceAround) return "space-around";
     if (props.spaceEvenly) return "space-evenly";
     if (props.spaceBetween) return "space-between";
@@ -78,63 +78,60 @@ const StackContainer = styled.div.attrs((props) => ({
     }
   }};
 
-  align-self: ${(props) => (props.stretchSelf ? "stretch" : props.alignSelf)};
+  align-self: ${props => (props.stretchSelf ? "stretch" : props.alignSelf)};
 
   // Create child flex properties
   ${({ flexItems = [] }) => flexItems.map(flexChild).join("")};
 
   /* other positional css  */
 
-  top: ${(props) => (props.top ? parseDimension(props.top) : "auto")};
+  top: ${props => (props.top ? parseDimension(props.top) : "auto")};
 
-  left: ${(props) => (props.left ? parseDimension(props.left) : "auto")};
+  left: ${props => (props.left ? parseDimension(props.left) : "auto")};
 
-  right: ${(props) => (props.right ? parseDimension(props.right) : "auto")};
+  right: ${props => (props.right ? parseDimension(props.right) : "auto")};
 
-  bottom: ${(props) => (props.bottom ? parseDimension(props.bottom) : "auto")};
+  bottom: ${props => (props.bottom ? parseDimension(props.bottom) : "auto")};
 
-  border: ${(props) => (props.border ? props.border : "auto")};
+  border: ${props => (props.border ? props.border : "auto")};
 
-  min-width: ${(props) => (props.minWidth ? parseDimension(props.minWidth) : "auto")};
+  min-width: ${props => (props.minWidth ? parseDimension(props.minWidth) : "auto")};
 
-  max-width: ${(props) => (props.maxWidth ? parseDimension(props.maxWidth) : "auto")};
+  max-width: ${props => (props.maxWidth ? parseDimension(props.maxWidth) : "auto")};
 
-  max-height: ${(props) => (props.maxHeight ? parseDimension(props.maxHeight) : "auto")};
+  max-height: ${props => (props.maxHeight ? parseDimension(props.maxHeight) : "auto")};
 
-  min-height: ${(props) => (props.minHeight ? parseDimension(props.minHeight) : "auto")};
+  min-height: ${props => (props.minHeight ? parseDimension(props.minHeight) : "auto")};
 
-  opacity: ${(props) => (props.opacity ? props.opacity : 1)};
+  opacity: ${props => (props.opacity ? props.opacity : 1)};
 
-  display: ${(props) => (props.hidden ? "none" : "flex")};
+  display: ${props => (props.hidden ? "none" : "flex")};
 
-  position: ${(props) => (props.absolute ? "absolute" : "auto")};
+  position: ${props => (props.absolute ? "absolute" : "auto")};
 
-  text-align: ${(props) => (props["text-center"] ? "center" : "inherit")};
+  text-align: ${props => (props["text-center"] ? "center" : "inherit")};
 
-  cursor: ${(props) => (props.onClick ? "pointer" : "default")};
+  cursor: ${props => (props.onClick ? "pointer" : "default")};
 
   /* other */
-  background: ${(props) =>
-    props.background && props.background.startsWith("--")
-      ? `var(${props.background})`
-      : props.background};
+  background: ${props =>
+    props.background && props.background.startsWith("--") ? `var(${props.background})` : props.background};
 
-  color: ${(props) =>
-    props.color && props.color.startsWith("--") ? `var(${props.color})` : props.color};
+  color: ${props => (props.color && props.color.startsWith("--") ? `var(${props.color})` : props.color)};
 
   box-sizing: border-box;
 
-  flex-wrap: ${(props) => (props.wrap === "true" ? "wrap" : "no-wrap")};
+  flex-wrap: ${props => (props.wrap === "true" ? "wrap" : "no-wrap")};
 
-  flex: ${(props) => (props.flex ? props.flex : "initial")};
+  flex: ${props => (props.flex ? props.flex : "initial")};
 
-  margin: ${(props) => (props.margin ? parseDimension(props.margin) : undefined)};
+  margin: ${props => (props.margin ? parseDimension(props.margin) : undefined)};
 
   > * {
     // padding: 1rem;
     // margin: 0.5rem;
     box-sizing: border-box;
-    margin: ${(props) =>
+    margin: ${props =>
       props.gap
         ? props.column
           ? `0px 0px ${parseDimension(props.gap)} 0px`
@@ -143,26 +140,25 @@ const StackContainer = styled.div.attrs((props) => ({
   }
 
   > *:first-child {
-    margin-left: ${(props) => (props.gap ? "0px" : "null")};
+    margin-left: ${props => (props.gap ? "0px" : "null")};
   }
 
   > *:last-child {
-    margin-right: ${(props) => (props.gap ? "0px" : "null")};
+    margin-right: ${props => (props.gap ? "0px" : "null")};
   }
 
-  border-radius: ${(props) => (props.rounded ? parseDimension(props.rounded) : 0)};
+  border-radius: ${props => (props.rounded ? parseDimension(props.rounded) : 0)};
 
-  padding: ${(props) => (props.padding ? parseDimension(props.padding) : 0)};
+  padding: ${props => (props.padding ? parseDimension(props.padding) : 0)};
 
-  overflow: ${(props) => props.overflow || "initial"};
+  overflow: ${props => props.overflow || "initial"};
 
-  box-shadow: ${(props) =>
-    props.shadow ? `0px 4px ${props.shadow}px 1px  rgba(0,0,0,0.1)` : "none"};
+  box-shadow: ${props => (props.shadow ? `0px 4px ${props.shadow}px 1px  rgba(0,0,0,0.1)` : "none")};
 
-  ${(props) => disabled(props)}
+  ${props => disabled(props)}
 `;
 
-const disabled = (props) => {
+const disabled = props => {
   if (props.disabled) {
     return `opacity: 0.5;
       user-select: none;
@@ -199,11 +195,7 @@ const StackInner = React.forwardRef<any, any>((props, ref) => {
     const { onClickPortal, ...rest } = props;
     return (
       <Portal modal={props.modal} background={props.modalBackground}>
-        <StackContainer
-          width="100%"
-          height="100%"
-          onClick={onClickPortal ? onClickPortal : () => null}
-        >
+        <StackContainer width="100%" height="100%" onClick={onClickPortal ? onClickPortal : () => null}>
           <StackContainer {...rest} className={css} ref={ref} />
         </StackContainer>
       </Portal>
@@ -219,9 +211,7 @@ const StackInner = React.forwardRef<any, any>((props, ref) => {
           .toLowerCase()
     ] = "true";
   // @ts-ignore
-  return (
-    <StackContainer {...rest} wrap={props.wrap ? "true" : "false"} className={css} ref={ref} />
-  );
+  return <StackContainer {...rest} wrap={props.wrap ? "true" : "false"} className={css} ref={ref} />;
 });
 
 StackContainer.defaultProps = {};
@@ -230,9 +220,9 @@ const Flex = StackInner;
 
 export const Div = Flex;
 
-export const Section = (props) => props.children || null;
+export const Status = props => (!!props.if ? props.children || null : null);
 
-export const Component = (props) => props.children || null;
+export const Component = props => props.children || null;
 
 // export const mFlex = motion(Flex);
 
