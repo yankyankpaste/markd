@@ -1,0 +1,80 @@
+:root {
+  --black-x-dark: rgb(10, 10, 10);
+  --black-darker: rgb(15, 15, 15);
+  --black-dark: rgb(29, 29, 29);
+  --black: rgb(33, 33, 33);
+  --black-light: rgb(51, 51, 51);
+  --black-lighter: rgb(102, 102, 102);
+  --black-x-light: rgb(119, 121, 128); /* text */
+  --black-xx-light: rgb(110, 111, 109);
+
+  --labelFont: 700 10px/1.2 "sans";
+
+  --valueFont: 500 14px/1.2 "sans";
+
+  --heading: 700 24px/1 "sans";
+  --heading-large: 700 32px/1 "sans";
+  --heading-larger: 700 48px/1 "sans";
+  --heading-small: 700 20px/1 "sans";
+  --heading-smaller: 700 16px/1 "sans";
+
+  --text: 500 12px/1 "sans";
+  --text-large: 700 16px/0.8 "sans";
+  --text-larger: 700 18px/1 "sans";
+  --text-small: 500 10px/1 "sans";
+  --text-smaller: 500 8px/1 "sans";
+}
+
+/*  font: label  10px/1.2em 700 0.5 "Inter-Bold", "Inter Bold", sans-serif ;*/
+/*  font: field value  14px/1.2em 500 0.5 "Inter-Med", sans-serif ;*/
+/*  font: heading  16px/1.2em 600 0 "Inter-Bold", "Inter", sans-serif ;*/
+
+@font-face {
+  font-family: "sans";
+  src: url(../fonts/Inter-Regular.woff2) format("woff2");
+  font-weight: 300;
+}
+@font-face {
+  font-family: "sans";
+  src: url(../fonts/Inter-Regular.woff2) format("woff2");
+  font-weight: 400;
+}
+@font-face {
+  font-family: "sans";
+  src: url(../fonts/Inter-Regular.woff2) format("woff2");
+  font-weight: 500;
+}
+@font-face {
+  font-family: "sans";
+  src: url(../fonts/Inter-Medium.woff2) format("woff2");
+  font-weight: 600;
+}
+@font-face {
+  font-family: "sans";
+  src: url(../fonts/Inter-SemiBold.woff2) format("woff2");
+  font-weight: 700;
+}
+@font-face {
+  font-family: "sans";
+  src: url(../fonts/Inter-SemiBold.woff2) format("woff2");
+  font-weight: bold;
+}
+
+html,
+body,
+main {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  background: rgb(40, 40, 40);
+}
+
+* {
+  box-sizing: inherit;
+  position: relative;
+  -webkit-font-smoothing: antialiased;
+  padding: 0;
+  margin: 0;
+}

@@ -1,0 +1,47 @@
+App:
+  Project:
+    enter: init
+    Board:
+      Idle:
+      ## User interaction with the board
+      Interaction~:
+        Enabled:
+          Selection:
+            None:
+              click layer: -> Selected
+
+            Selected:
+              enter: selectLayer
+              click board layer: -> None
+
+              Single:
+                shift down: -> Mulitple
+                click layer: selectLayer()
+
+              Multiple:
+                shift up: -> Single
+                click layer: selectLayers()
+            ## this is to manage wether the user wishes to select the top frame or within it
+            Bias~:
+              Inner:
+                ctrl down: -> Outer
+                mouse over layer: setHover()
+                mouse leave layer: unsetHover()
+              Outer:
+                ctrl up: -> Inner
+                mouse over layer: setHoverForRootLayers()
+                mouse leave layer: unsetHover()
+        Disabled:
+
+    Panels:
+      Layers~:
+        New:
+        Move:
+        Resize:
+        Delete:
+        Rename:
+        Rearrange:
+        Addparent:
+        Properties:
+          Background:
+          Position:
