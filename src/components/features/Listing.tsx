@@ -1,6 +1,6 @@
 import { Text } from "components/resource/controls/Text";
 import React, { useState } from "react";
-import { Div } from "vendor/misc/Flex";
+import { Div, Status } from "vendor/misc/Flex";
 /**
  * Listing
  * @component
@@ -10,30 +10,49 @@ export const Listing = (props: ListingPropTypes) => {
   const map = useListing(props);
   return (
     <>
-      <Div column gap={5} visible={map.status === "items"}>
-        {map.items.map(bookmark => (
-          <Div row>
-            {/* name */}
-            <Div flex={1}>
-              <Text>
-                <a display={{ all: "unset" }}>{bookmark.name}</a>
-              </Text>
-            </Div>
+      <Status if={map.status === "items"}>
+        <Div>
+          <Div column gap={10}>
+            {/* ideally pop this into a two col */}
+            {map.items.map(bookmark => (
+              <Div row>
+                {/* name */}
+                <Div flex={1}>
+                  <Text>
+                    <a display={{ all: "unset" }}>{bookmark.name}</a>
+                  </Text>
+                </Div>
 
-            {/* actions */}
-            <Div>
-              {/* delete */}
-              {/* share */}
-              {/* favourite */}
-            </Div>
+                {/* actions */}
+                <Div>
+                  {/* delete */}
+                  {/* share */}
+                  {/* favourite */}
+                </Div>
+              </Div>
+            ))}
           </Div>
-        ))}
-      </Div>
 
-      <Div column center middle visible={map.status === "empty"}>
-        <Text>No bookmarks have been created yet</Text>
-        {/* create bookmark button */}
-      </Div>
+          <Div data-pagination>
+            {/* 1,2,3,4 list */}
+            {/* next prev arrows */}
+          </Div>
+        </Div>
+      </Status>
+
+      <Status if={map.status === "empty"}>
+        <Div column center middle>
+          <Text>No bookmarks have been created yet</Text>
+          {/* create bookmark button */}
+        </Div>
+      </Status>
+
+      <Status if={map.status === "error"}>
+        <Div column center middle>
+          <Text>No bookmarks have been created yet</Text>
+          {/* create bookmark button */}
+        </Div>
+      </Status>
     </>
   );
 };
@@ -41,12 +60,14 @@ export const Listing = (props: ListingPropTypes) => {
 const useListing = (props: ListingPropTypes) => {
   type Status = "initial" | "empty" | "items" | "error";
   type Bookmark = { name: string; url: string };
+  type PaginationStatus = "on first" | "at end" | "in middle";
 
   const [status, setStatus] = useState<Status>("initial");
   const [items, setItems] = useState<Bookmark[]>([]);
 
   switch (status) {
     case "initial":
+      // feature: if search param is added, determine selected or current page...
       try {
         const storage = localStorage.getItem("bookmarks");
         const bookmarks = JSON.parse(storage);
