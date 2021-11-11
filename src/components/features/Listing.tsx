@@ -1,120 +1,92 @@
-import { Text } from "components/resource/controls/Text";
+import { H, Text } from "components/resource/controls/Text";
+import { Bookmark } from "components/service/StorageContext";
 import React, { useState } from "react";
 import { Div, Status } from "vendor/misc/Flex";
 import { Footer } from "./Footer";
 import { Heading } from "./Heading";
+
+import * as Icons from "react-feather";
+
 /**
  * Listing
  * @component
  *
  */
 export const Listing = (props: ListingPropTypes) => {
-  const map = useListing(props);
   return (
     <>
-      <Status display={map.status === "items"}>
-        <Div>
-          <Div column gap={10}>
-            {/* ideally pop this into a two col */}
-            {map.items.map(bookmark => (
-              <Div row>
-                {/* name */}
-                <Div flex={1}>
-                  <Text>
-                    <a display={{ all: "unset" }}>{bookmark.name}</a>
-                  </Text>
-                </Div>
+      <Div expand column>
+        <Div column gap={10} padding={30} expand>
+          {props.items.map(bookmark => (
+            <Div key={bookmark} row background="--grey" rounded={10} padding={10}>
+              {/* name */}
+              <Div flex={1} padding={20} rounded={10} column>
+                <H variant="large">
+                  <a display={{ all: "unset" }}>{bookmark.name}</a>
+                </H>
+                <Text variant="larger">
+                  <a display={{ all: "unset" }}>{bookmark.url}</a>
+                </Text>
+              </Div>
 
-                {/* actions */}
-                <Div>
+              {/* actions */}
+              <Div bottom>
+                <Div padding="10px 20px" gap={10} rounded={20}>
                   {/* delete */}
+                  <Div onClick={() => props.onEvent("press delete bookmark", bookmark)}>
+                    <Icons.Trash2 />
+                  </Div>
                   {/* share */}
+
+                  <a href={bookmark.url} target="_blank" display={{ all: "unset" }}>
+                    <Icons.ExternalLink />
+                  </a>
+
                   {/* favourite */}
                 </Div>
               </Div>
-            ))}
-          </Div>
+            </Div>
+          ))}
+        </Div>
 
-          <Div data-pagination>
-            {/* 1,2,3,4 list */}
-            {/* next prev arrows */}
+        <Div style={{ position: "absolute", bottom: 0, width: "100%" }}>
+          <Div center expand padding={10}>
+            <Div background="white" rounded={20} padding="10px 10px" center gap={10}>
+              <Div disabled middle center background="--grey" padding={20} rounded={20}>
+                <Icons.ArrowLeft />
+              </Div>
+              {/* Page slot 1 */}
+              <Div middle center background="--grey" padding={20} rounded={20} minWidth={60}>
+                <Text variant="large">1</Text>
+              </Div>
+              {/* Page slot 2 */}
+              <Div hidden middle center background="--grey" padding={20} rounded={20}>
+                <Text variant="large">1</Text>
+              </Div>
+              {/* Page slot 3  */}
+              <Div hidden middle center background="--grey" padding={20} rounded={20}>
+                <Text variant="large">1</Text>
+              </Div>
+              {/* next prev arrows */}
+              <Div disabled middle center background="--grey" padding={20} rounded={20}>
+                <Icons.ArrowRight />
+              </Div>
+            </Div>
           </Div>
         </Div>
-      </Status>
-      <Status display={map.status === "empty"}>
-        <Div column center middle>
-          <Text>No bookmarks have been created yet</Text>
-          {/* create bookmark button */}
-        </Div>
-      </Status>
-      <Status display={map.status === "error"}>
-        <Div column center middle>
-          <Text>No bookmarks have been created yet</Text>
-          {/* create bookmark button */}
-        </Div>
-      </Status>
+      </Div>
     </>
   );
 };
 
 const useListing = (props: ListingPropTypes) => {
   type Status = "initial" | "empty" | "items" | "error";
-  type Bookmark = { name: string; url: string };
-  type PaginationStatus = "on first" | "at end" | "in middle";
-
-  const [status, setStatus] = useState<Status>("initial");
-  const [items, setItems] = useState<Bookmark[]>([]);
-  const [filteredItems, setFilteredItems] = useState<Bookmark[]>([]);
-
-  // switch (status) {
-  //   case "initial":
-  //     // feature: if search param is added, determine selected or current page...
-  //     new Promise(resolve => {
-  //       const storage = localStorage.getItem("bookmarks");
-  //       const bookmarks = JSON.parse(storage);
-  //       setItems(bookmarks);
-
-  //       resolve(bookmarks);
-  //     })
-  //       .then(bookmarks => {
-  //         // apply filter here???
-  //         const filter = bookmarks;
-  //         setFilteredItems(filter);
-  //         filter.length ? setStatus("items") : setStatus("empty");
-  //         // filter out bookmarks from search??
-  //       })
-  //       .catch(e => {
-  //         setStatus("error");
-  //       });
-
-  //     break;
-
-  //   case "empty":
-  //     // await for localstorage update... need hook for this
-  //     if (filteredItems.length > 0) {
-  //       setStatus("items");
-  //     }
-  //     break;
-
-  //   case "items":
-  //     if (filteredItems.length === 0) {
-  //       setStatus("empty");
-  //     }
-  //     break;
-
-  //   case "error":
-  //     // fatal, assuming only at this phase localstorage is unparseable...
-  //     // ... only improvement could be to wipe local storage and reset
-  //     break;
-
-  //   default:
-  // }
-  return {
-    status,
-    items
-  };
+  return {};
 };
 
-const ListingDefaultProps = {};
+const ListingDefaultProps = {
+  items: [] as Bookmark[],
+  onEvent: (name, value) => {}
+};
 Listing.defaultProps = ListingDefaultProps;
 type ListingPropTypes = typeof ListingDefaultProps;

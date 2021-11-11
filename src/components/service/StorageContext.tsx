@@ -1,17 +1,22 @@
 import React, { useState } from "react";
+import { Users as UsersPool } from "react-feather";
 
 export const StorageContext = React.createContext({
   users: {},
-  bookmarkPool: {}
+  bookmarkPool: {},
+  command: null as Command
 });
 
-const StorageProvider = props => {
+export const useLocalStorage = () => {
   type StorageStatus = "initial" | "retrieving" | "initialising" | "initialised" | "storing" | "idle" | "not supported";
-  const [storageStatus, setStorageStatus] = useState<StorageStatus>("initial");
-  const [userData, setUserData] = useState<Users>({});
+
+  const [status, setStorageStatus] = useState<StorageStatus>("initial");
+
+  const [userData, setUserData] = useState<UsersPool>({});
+
   const [bookmarkData, setBookmarkData] = useState<BookmarkPool>({});
 
-  switch (storageStatus) {
+  switch (status) {
     case "initial":
       if ("localStorage" in window) {
         setStorageStatus("retrieving");
@@ -24,12 +29,20 @@ const StorageProvider = props => {
       const users = localStorage.getItem("users");
       const bookmarks = localStorage.getItem("bookmarks");
       if (!users || !bookmarks) setStorageStatus("initialising");
+      setStorageStatus("initialising");
       break;
     }
 
     case "initialising": {
-      const users = { bananaMan: { avatar: "banana", user: "bananaMan" } };
-      const bookmark = { bananaMan: [] };
+      const users: UsersPool = { bananaMan: { avatar: "banana", user: "bananaMan" } };
+      const bookmark: BookmarkPool = {
+        bananaMan: [
+          {
+            name: "bbc",
+            url: "https://bbc.co.uk"
+          }
+        ]
+      };
       localStorage.setItem("users", JSON.stringify(users));
       localStorage.setItem("bookma", JSON.stringify(bookmark));
       setUserData(users);
@@ -47,20 +60,42 @@ const StorageProvider = props => {
     }
   }
 
-  return <StorageContext.Provider value={{}}>{props.children}</StorageContext.Provider>;
+  const onCommand: Command = (name, value) => {
+    switch (name) {
+      case "get bookmarks for user": {
+        const user = value as string;
+        return bookmarkData[user];
+        break;
+      }
+    }
+  };
+
+  const contextData = { users: userData, bookmarkPool: bookmarkData, command: onCommand };
+  return [status, contextData] as const;
 };
 
-type Users = {
-  [name: string]: {
+// Types
+
+type ProviderRequests = "get bookmarks for user" | "update user" | "add bookmark" | "update bookmark";
+
+type UsersPool = {
+  [name: UserUuid]: {
     avatar: string;
     user: string;
   };
 };
+
 type BookmarkPool = {
-  [uuidRef: UserUuid]: {
-    name: string;
-    url: link;
-  }[];
+  [name: UserUuid]: Bookmark[];
 };
+
+export type Bookmark = {
+  name: string;
+  url: link;
+};
+
 type UserUuid = string;
+
 type link = string;
+
+type Command = (name: ProviderRequests, value: string | { user: UserUuid; value: Bookmark | string }) => any;

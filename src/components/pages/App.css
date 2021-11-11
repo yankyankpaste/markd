@@ -8,6 +8,9 @@
 
   --background: #f0f0f0;
 
+  --grey: #cccccc;
+  --grey-dark: rgb(159, 159, 159);
+
   --black-x-dark: rgb(10, 10, 10);
   --black-darker: rgb(15, 15, 15);
   --black-dark: rgb(29, 29, 29);

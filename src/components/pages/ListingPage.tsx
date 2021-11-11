@@ -1,9 +1,11 @@
 import { Listing } from "components/features/Listing";
-import { Text } from "components/resource/controls/Text";
-import React, { useState } from "react";
+import { H, Text } from "components/resource/controls/Text";
+import { StorageContext, StorageProvider } from "components/service/StorageContext";
+import React, { useContext, useState } from "react";
 import { Div, Status } from "vendor/misc/Flex";
 import { Footer } from "../features/Footer";
 import { Heading } from "../features/Heading";
+
 /**
  * Listing
  * @component
@@ -11,11 +13,21 @@ import { Heading } from "../features/Heading";
  */
 export const ListingPage = (props: ListingPropTypes) => {
   const map = useListing(props);
+  const { status } = map;
   return (
     <Div expand background="--background" column>
       <Heading />
-      <Listing />
+      {status === "empty" && <EmptyCard />}
+      {status === "items" && <Listing items={map.items} />}
       <Footer />
+    </Div>
+  );
+};
+
+const EmptyCard = props => {
+  return (
+    <Div rounded={10}>
+      <H>Create your first item</H>
     </Div>
   );
 };
@@ -27,57 +39,37 @@ const useListing = (props: ListingPropTypes) => {
 
   const [status, setStatus] = useState<Status>("initial");
   const [items, setItems] = useState<Bookmark[]>([]);
-  const [filteredItems, setFilteredItems] = useState<Bookmark[]>([]);
+  const [filter, setFilter] = useState<string>("");
+  const storage = useContext(StorageContext);
 
-  // switch (status) {
-  //   case "initial":
-  //     // feature: if search param is added, determine selected or current page...
-  //     new Promise(resolve => {
-  //       const storage = localStorage.getItem("bookmarks");
-  //       const bookmarks = JSON.parse(storage);
-  //       setItems(bookmarks);
+  switch (status) {
+    case "initial":
+      const bookmarks = storage.command("get bookmarks for user", props.user);
+      setItems(bookmarks);
 
-  //       resolve(bookmarks);
-  //     })
-  //       .then(bookmarks => {
-  //         // apply filter here???
-  //         const filter = bookmarks;
-  //         setFilteredItems(filter);
-  //         filter.length ? setStatus("items") : setStatus("empty");
-  //         // filter out bookmarks from search??
-  //       })
-  //       .catch(e => {
-  //         setStatus("error");
-  //       });
+      if (bookmarks.length) setStatus("items");
+      else setStatus("empty");
+      break;
 
-  //     break;
+    case "empty":
+      break;
 
-  //   case "empty":
-  //     // await for localstorage update... need hook for this
-  //     if (filteredItems.length > 0) {
-  //       setStatus("items");
-  //     }
-  //     break;
+    case "items":
+      break;
 
-  //   case "items":
-  //     if (filteredItems.length === 0) {
-  //       setStatus("empty");
-  //     }
-  //     break;
+    case "error":
+      break;
 
-  //   case "error":
-  //     // fatal, assuming only at this phase localstorage is unparseable...
-  //     // ... only improvement could be to wipe local storage and reset
-  //     break;
-
-  //   default:
-  // }
+    default:
+  }
   return {
     status,
-    items
+    items: items.filter(item => item.name.includes(filter) || item.url.includes(filter))
   };
 };
 
-const ListingDefaultProps = {};
-Listing.defaultProps = ListingDefaultProps;
+const ListingDefaultProps = {
+  user: null as string
+};
+ListingPage.defaultProps = ListingDefaultProps;
 type ListingPropTypes = typeof ListingDefaultProps;

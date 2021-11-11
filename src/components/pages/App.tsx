@@ -1,40 +1,71 @@
-import React, { useContext, useState } from "react";
 import { H, SpecCard, Text } from "components/resource/controls/Text";
-import { useOnce } from "utils/react-utils";
+import React, { useContext, useRef, useState } from "react";
 import { Div } from "vendor/misc/Flex";
+import { StorageContext, StorageProvider, useLocalStorage } from "../service/StorageContext";
 import "./App.css";
-import { AsciiLogo } from "logo";
-import { ContextReplacementPlugin } from "webpack";
-import { CreateBookmarkCard } from "components/features/CreateBookmarkCard";
-import { Heading } from "components/features/Heading";
-import { Listing } from "components/features/Listing";
-import { Footer } from "components/features/Footer";
 import { ListingPage } from "./ListingPage";
-import { StorageContext } from "../service/StorageContext";
-
+import * as Icons from "react-feather";
 export const App = props => {
-  const { content, states } = useApp(props);
-  const context = useContext(StorageContext);
+  const { status, storageContext, targetUser } = useApp(props);
 
   return (
-    <StorageContext.Provider value={{}}>
+    <StorageContext.Provider value={storageContext}>
       <Div expand background="--black-x-dark">
-        {/* listing page : /listing */}
-
-        <ListingPage />
         {/* welcome page?? */}
-
         {/* signin page?? */}
+
+        {/* render the listing page when we have targetted an intended user */}
+        {/* for now assuming user has been targetted */}
+
+        {status === "deserialising storage" && (
+          <Div expand middle center color="white">
+            <Icons.Loader />
+            <H variant="large">Firing up</H>
+          </Div>
+        )}
+
+        {status === "browser incompatible" && (
+          <Div expand middle center column color="white" gap={20}>
+            <Icons.AlertTriangle />
+            <H variant="large">Ahh crap, your browser is incompatible</H>
+            <Text variant="large">Localstorage needs to be available in order to use this app.</Text>
+          </Div>
+        )}
+
+        {status === "loaded user" && <ListingPage user={targetUser} />}
       </Div>
     </StorageContext.Provider>
   );
 };
 
 function useApp(props) {
+  type Status = "initial" | "deserialising storage" | "oops" | "browser incompatible" | "loaded user";
+
+  const [storageStatus, storageContext] = useLocalStorage();
+
+  const [status, setStatus] = useState<Status>("initial");
+
+  // for now hard coding this in, we would get this through through dynamic means (sign in, url etc)
+  const [user, setUser] = useState("bananaMan");
+
+  switch (status) {
+    case "initial":
+      // future: get user from login or params
+      if (storageStatus === "retrieving") {
+        setStatus("deserialising storage");
+      }
+      break;
+    case "deserialising storage":
+      if (storageStatus === "initialised") {
+        setStatus("loaded user");
+      }
+      if (storageStatus === "not supported") setStatus("browser incompatible");
+      break;
+  }
   return {
-    content: {},
-    onEvent: () => {},
-    states: {}
+    storageContext,
+    status,
+    targetUser: user
   };
 }
 
