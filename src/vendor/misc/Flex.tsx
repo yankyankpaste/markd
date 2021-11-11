@@ -220,7 +220,7 @@ const Flex = StackInner;
 
 export const Div = Flex;
 
-export const Status = props => (!!props.if ? props.children || null : null);
+export const Status = props => (!!props.display ? props.children || null : null);
 
 export const Component = props => props.children || null;
 

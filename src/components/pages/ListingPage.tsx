@@ -1,59 +1,22 @@
+import { Listing } from "components/features/Listing";
 import { Text } from "components/resource/controls/Text";
 import React, { useState } from "react";
 import { Div, Status } from "vendor/misc/Flex";
-import { Footer } from "./Footer";
-import { Heading } from "./Heading";
+import { Footer } from "../features/Footer";
+import { Heading } from "../features/Heading";
 /**
  * Listing
  * @component
  *
  */
-export const Listing = (props: ListingPropTypes) => {
+export const ListingPage = (props: ListingPropTypes) => {
   const map = useListing(props);
   return (
-    <>
-      <Status display={map.status === "items"}>
-        <Div>
-          <Div column gap={10}>
-            {/* ideally pop this into a two col */}
-            {map.items.map(bookmark => (
-              <Div row>
-                {/* name */}
-                <Div flex={1}>
-                  <Text>
-                    <a display={{ all: "unset" }}>{bookmark.name}</a>
-                  </Text>
-                </Div>
-
-                {/* actions */}
-                <Div>
-                  {/* delete */}
-                  {/* share */}
-                  {/* favourite */}
-                </Div>
-              </Div>
-            ))}
-          </Div>
-
-          <Div data-pagination>
-            {/* 1,2,3,4 list */}
-            {/* next prev arrows */}
-          </Div>
-        </Div>
-      </Status>
-      <Status display={map.status === "empty"}>
-        <Div column center middle>
-          <Text>No bookmarks have been created yet</Text>
-          {/* create bookmark button */}
-        </Div>
-      </Status>
-      <Status display={map.status === "error"}>
-        <Div column center middle>
-          <Text>No bookmarks have been created yet</Text>
-          {/* create bookmark button */}
-        </Div>
-      </Status>
-    </>
+    <Div expand background="--background" column>
+      <Heading />
+      <Listing />
+      <Footer />
+    </Div>
   );
 };
 

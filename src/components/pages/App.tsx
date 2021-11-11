@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import { H, SpecCard, Text } from "components/resource/controls/Text";
 import { useOnce } from "utils/react-utils";
 import { Div } from "vendor/misc/Flex";
@@ -9,24 +9,24 @@ import { CreateBookmarkCard } from "components/features/CreateBookmarkCard";
 import { Heading } from "components/features/Heading";
 import { Listing } from "components/features/Listing";
 import { Footer } from "components/features/Footer";
+import { ListingPage } from "./ListingPage";
+import { StorageContext } from "../service/StorageContext";
 
-export const App = (props) => {
+export const App = props => {
   const { content, states } = useApp(props);
-  useOnce(() => {
-    console.log(AsciiLogo);
-  });
+  const context = useContext(StorageContext);
+
   return (
-    <Div expand padding={50} column gap={50} background="--black-x-dark">
-      <Heading />
+    <StorageContext.Provider value={{}}>
+      <Div expand background="--black-x-dark">
+        {/* listing page : /listing */}
 
-      {/* listing page  */}
-      <Listing />
+        <ListingPage />
+        {/* welcome page?? */}
 
-      {/* welcome page?? */}
-
-      {/* signin page?? */}
-      <Footer />
-    </Div>
+        {/* signin page?? */}
+      </Div>
+    </StorageContext.Provider>
   );
 };
 
@@ -34,21 +34,13 @@ function useApp(props) {
   return {
     content: {},
     onEvent: () => {},
-    states: {},
+    states: {}
   };
 }
 
 const SpecSection = () => {
   return (
-    <Div
-      id="Specimen"
-      row
-      width="100%"
-      padding={40}
-      gap={20}
-      rounded={20}
-      column
-    >
+    <Div id="Specimen" row width="100%" padding={40} gap={20} rounded={20} column>
       <Div>
         <H variant="larger" color="white">
           Specimen

@@ -1,4 +1,13 @@
 :root {
+  --primary: #f5f184;
+  --primary-light: #f7f5bf;
+  --primary-dark: #3c3b06;
+
+  --secondary: #ff9edb;
+  --secondary-dark: #3c2534;
+
+  --background: #f0f0f0;
+
   --black-x-dark: rgb(10, 10, 10);
   --black-darker: rgb(15, 15, 15);
   --black-dark: rgb(29, 29, 29);
@@ -77,4 +86,5 @@ main {
   -webkit-font-smoothing: antialiased;
   padding: 0;
   margin: 0;
+  font-family: "sans", sans;
 }
