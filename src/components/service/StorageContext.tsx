@@ -34,9 +34,42 @@ export const useLocalStorage = () => {
     }
 
     case "initialising": {
+      // fake it till you make it...
       const users: UsersPool = { bananaMan: { avatar: "banana", user: "bananaMan" } };
       const bookmark: BookmarkPool = {
         bananaMan: [
+          {
+            name: "bbc",
+            url: "https://bbc.co.uk"
+          },
+          {
+            name: "bbc",
+            url: "https://bbc.co.uk"
+          },
+          {
+            name: "bbc",
+            url: "https://bbc.co.uk"
+          },
+
+          {
+            name: "bbc",
+            url: "https://bbc.co.uk"
+          },
+
+          {
+            name: "bbc",
+            url: "https://bbc.co.uk"
+          },
+
+          {
+            name: "bbc",
+            url: "https://bbc.co.uk"
+          },
+
+          {
+            name: "bbc",
+            url: "https://bbc.co.uk"
+          },
           {
             name: "bbc",
             url: "https://bbc.co.uk"

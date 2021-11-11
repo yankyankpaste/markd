@@ -15,7 +15,7 @@ export const ListingPage = (props: ListingPropTypes) => {
   const map = useListing(props);
   const { status } = map;
   return (
-    <Div expand background="--background" column>
+    <Div expand background="--background" column flex={1}>
       <Heading />
       {status === "empty" && <EmptyCard />}
       {status === "items" && <Listing items={map.items} />}
@@ -35,7 +35,6 @@ const EmptyCard = props => {
 const useListing = (props: ListingPropTypes) => {
   type Status = "initial" | "empty" | "items" | "error";
   type Bookmark = { name: string; url: string };
-  type PaginationStatus = "on first" | "at end" | "in middle";
 
   const [status, setStatus] = useState<Status>("initial");
   const [items, setItems] = useState<Bookmark[]>([]);
