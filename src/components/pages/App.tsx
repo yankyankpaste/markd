@@ -1,16 +1,16 @@
 import React from "react";
-import { H, SpecCard, Text } from "resource/controls/Text";
+import { H, SpecCard, Text } from "components/resource/controls/Text";
 import { useOnce } from "utils/react-utils";
 import { Div } from "vendor/misc/Flex";
 import "./App.css";
-import { AsciiLogo } from "resource/logo";
+import { AsciiLogo } from "logo";
 import { ContextReplacementPlugin } from "webpack";
 import { CreateBookmarkCard } from "components/features/CreateBookmarkCard";
 import { Heading } from "components/features/Heading";
 import { Listing } from "components/features/Listing";
 import { Footer } from "components/features/Footer";
 
-export const App = props => {
+export const App = (props) => {
   const { content, states } = useApp(props);
   useOnce(() => {
     console.log(AsciiLogo);
@@ -34,13 +34,21 @@ function useApp(props) {
   return {
     content: {},
     onEvent: () => {},
-    states: {}
+    states: {},
   };
 }
 
 const SpecSection = () => {
   return (
-    <Div id="Specimen" row width="100%" padding={40} gap={20} rounded={20} column>
+    <Div
+      id="Specimen"
+      row
+      width="100%"
+      padding={40}
+      gap={20}
+      rounded={20}
+      column
+    >
       <Div>
         <H variant="larger" color="white">
           Specimen

@@ -1,10 +1,15 @@
 import React, { useEffect } from "react";
 import Div from "vendor/misc/Flex";
-import { processCssVar } from "utils/utils";
 
-export const H = ({ styles = {}, variant = "regular" as keyof typeof hStyles, ...rest }) => {
+export const H = ({
+  styles = {},
+  variant = "regular" as keyof typeof hStyles,
+  ...rest
+}) => {
   const s = hStyles[variant] || {};
-  return <h1 style={{ ...s, ...styles, color: rest.color }}>{rest.children}</h1>;
+  return (
+    <h1 style={{ ...s, ...styles, color: rest.color }}>{rest.children}</h1>
+  );
 };
 
 const hStyles = {
@@ -15,7 +20,11 @@ const hStyles = {
   smaller: { font: "var(--heading-smaller)" },
 };
 
-export const Text = ({ styles = {}, variant = "regular" as keyof typeof textStyles, ...rest }) => {
+export const Text = ({
+  styles = {},
+  variant = "regular" as keyof typeof textStyles,
+  ...rest
+}) => {
   const s = textStyles[variant] || {};
   s.color = rest.color || "auto";
   return <div style={{ ...s, ...styles }}>{rest.children}</div>;
