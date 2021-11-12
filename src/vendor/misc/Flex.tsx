@@ -52,12 +52,14 @@ const StackContainer = styled.div.attrs(props => ({
       if (props.left) return "flex-start";
       if (props.right) return "flex-end";
       if (props.center) return "center";
-      return "stretch";
+      if (props.stretchItems) return "stretch";
+      return "start";
     } else {
       if (props.top) return "flex-start";
       if (props.middle) return "center";
       if (props.bottom) return "flex-end";
-      return "stretch";
+      if (props.stretchItems) return "stretch";
+      return "start";
     }
   }};
 
@@ -69,16 +71,18 @@ const StackContainer = styled.div.attrs(props => ({
       if (props.top) return "flex-start";
       if (props.middle) return "center";
       if (props.bottom) return "flex-end";
+      if (props.stretchItems) return "stretch";
       return "stretch";
     } else {
       if (props.left) return "flex-start";
       if (props.right) return "flex-end";
       if (props.center) return "center";
+      if (props.stretchItems) return "stretch";
       return "stretch";
     }
   }};
 
-  align-self: ${props => (props.stretchSelf ? "stretch" : props.alignSelf)};
+  align-self: ${props => (props.stretch ? "stretch" : props.alignSelf)};
 
   // Create child flex properties
   ${({ flexItems = [] }) => flexItems.map(flexChild).join("")};
@@ -105,8 +109,6 @@ const StackContainer = styled.div.attrs(props => ({
 
   opacity: ${props => (props.opacity ? props.opacity : 1)};
 
-  display: ${props => (props.hidden ? "none" : "flex")};
-
   position: ${props => (props.absolute ? "absolute" : "auto")};
 
   text-align: ${props => (props["text-center"] ? "center" : "inherit")};
@@ -122,8 +124,6 @@ const StackContainer = styled.div.attrs(props => ({
   box-sizing: border-box;
 
   flex-wrap: ${props => (props.wrap === "true" ? "wrap" : "no-wrap")};
-
-  flex: ${props => (props.flex ? props.flex : "initial")};
 
   margin: ${props => (props.margin ? parseDimension(props.margin) : undefined)};
 
@@ -150,7 +150,23 @@ const StackContainer = styled.div.attrs(props => ({
   ${props => disabled(props)}
 
   ${props => gap(props)}
+
+  ${props => display(props)}
+
+  ${props => flexProps(props)}
 `;
+
+const flexProps = props => {
+  if ("flex" in props) {
+    if (props.flex === 0) return "flex: 0 0 auto";
+    return `flex: ${props.flex}`;
+  }
+};
+
+const display = props => {
+  if ("hidden" in props) return props.hidden ? "display: none;" : "display: flex;";
+  if ("visible" in props) return props.visible ? "display: flex;" : "display: none;";
+};
 
 const gap = props => {
   if (props.gap && props.column) {
@@ -209,27 +225,16 @@ const parseDimension = (val = "auto") => (typeof val !== "string" ? val + "px" :
 // @ts-ignore
 const StackInner = React.forwardRef<any, any>((props, ref) => {
   const css = classNames(props.className);
-  if (props.portal) {
-    const { onClickPortal, ...rest } = props;
-    return (
-      <Portal modal={props.modal} background={props.modalBackground}>
-        <StackContainer width="100%" height="100%" onClick={onClickPortal ? onClickPortal : () => null}>
-          <StackContainer {...rest} className={css} ref={ref} />
-        </StackContainer>
-      </Portal>
-    );
-  }
   const rest = { ...props };
-  if (props.name)
-    rest[
-      "data-auto-" +
-        props.name
-          .split(" ")
-          .join("-")
-          .toLowerCase()
-    ] = "true";
+  if (props.aria) {
+    rest["aria-label"] = props.aria
+      .split(" ")
+      .join("-")
+      .toLowerCase();
+    rest.role = "region";
+  }
   // @ts-ignore
-  return <StackContainer {...rest} wrap={props.wrap ? "true" : "false"} className={css} ref={ref} />;
+  return <StackContainer {...rest} className={css} ref={ref} />;
 });
 
 StackContainer.defaultProps = {};
