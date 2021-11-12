@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { cssVar } from "utils/utils";
-import Div from "vendor/misc/Flex";
+import Box from "vendor/misc/Flex";
 
 export const H = ({ styles = {}, variant = "regular" as keyof typeof hStyles, ...rest }) => {
   const s = hStyles[variant] || {};
@@ -31,11 +31,11 @@ const textStyles = {
 
 export const SpecCard = props => {
   return (
-    <Div rounded={20} background="--black" width={400} height={500} column padding={30} gap={30} {...props}>
+    <Box rounded={20} background="--black" width={400} height={500} column padding={30} gap={30} {...props}>
       <H variant="regular" color="white">
         {props.name}
       </H>
       {props.children}
-    </Div>
+    </Box>
   );
 };

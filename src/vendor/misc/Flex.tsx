@@ -236,7 +236,7 @@ StackContainer.defaultProps = {};
 // @ts-ignore
 const Flex = StackInner;
 
-export const Div = Flex;
+export const Box = Flex;
 
 export const Status = props => (!!props.display ? props.children || null : null);
 

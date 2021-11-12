@@ -1,34 +1,27 @@
 import React, { useRef, useState } from "react";
 import { H, SpecCard, Text } from "components/resource/controls/Text";
 import { useOnce } from "utils/react-utils";
-import { Div } from "vendor/misc/Flex";
+import { Box } from "vendor/misc/Flex";
 import { AsciiLogo } from "logo";
 
-export const CreateBookmarkCard = (props) => {
+export const CreateBookmarkCard = props => {
   const map = useCreateBookmarkCard(props);
   const { display, delegate } = map;
   return (
-    <Div
-      background="--black-light"
-      rounded={20}
-      expand
-      column
-      padding={20}
-      gap={10}
-    >
+    <Box background="--black-light" rounded={20} expand column padding={20} gap={10}>
       <form {...delegate.form} autoComplete="off" noValidate>
-        <Div column color="white" gap={5}>
+        <Box column color="white" gap={5}>
           <H variant="regular">Add bookmark</H>
           <Text variant="regular">Where the magic happens.</Text>
-        </Div>
-        <Div column>{/* fields */}</Div>
-        <Div>{/* button */}</Div>
+        </Box>
+        <Box column>{/* fields */}</Box>
+        <Box>{/* button */}</Box>
       </form>
-    </Div>
+    </Box>
   );
 };
 
-const useCreateBookmarkCard = (props) => {
+const useCreateBookmarkCard = props => {
   type status = "initial" | "ready to send" | "invalid" | "final";
   type formStatus = "initial" | "valid" | "invalid"; //  | "sending" | "sendError" | "sent"
 
@@ -61,7 +54,7 @@ const useCreateBookmarkCard = (props) => {
     default:
   }
 
-  const storeBookmark = (meta) => {
+  const storeBookmark = meta => {
     const fields = meta as { url: string; name: string };
     localStorage.setItem(fields.name, fields.url);
     setStatus("stored");
@@ -71,13 +64,13 @@ const useCreateBookmarkCard = (props) => {
     status,
     display: {
       disableSubmit: ["initial", "invalid"].includes(formStatus),
-      pending: ["sending"].includes(formStatus),
+      pending: ["sending"].includes(formStatus)
     },
     styling: {},
     delegate: {
       form: {
-        onSubmit: () => mapEvents("from form")("submit"),
-      },
-    },
+        onSubmit: () => mapEvents("from form")("submit")
+      }
+    }
   };
 };

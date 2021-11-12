@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import { AlertCircle } from "react-feather";
 import { useUpdateRender } from "utils/react-utils";
-import { Div } from "vendor/misc/Flex";
+import { Box } from "vendor/misc/Flex";
 import { Text } from "./Text";
 type status = "initial" | "input valid" | "input invalid";
 
@@ -19,18 +19,18 @@ export const Field = React.forwardRef((props: TextFieldPropTypes, inRef) => {
   const [update] = useUpdateRender();
 
   return (
-    <Div column gap={5}>
-      <Div padding={5}>
+    <Box column gap={5}>
+      <Box padding={5}>
         <Text>
           <label htmlFor={props.name} style={{ all: "inherit" }}>
             {props.name}
           </label>
         </Text>
-        <Div flex={1} right>
+        <Box flex={1} right>
           <AlertCircle size={20} opacity={Number(status === "input invalid")} />
-        </Div>
-      </Div>
-      <Div column height={40} padding={10} background="white" rounded={10}>
+        </Box>
+      </Box>
+      <Box column height={40} padding={10} background="white" rounded={10}>
         <Text>
           <input
             id={props.name}
@@ -55,8 +55,8 @@ export const Field = React.forwardRef((props: TextFieldPropTypes, inRef) => {
             }}
           />
         </Text>
-      </Div>
-    </Div>
+      </Box>
+    </Box>
   );
 });
 

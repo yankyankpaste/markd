@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import { AlertCircle } from "react-feather";
 import { useUpdateRender } from "utils/react-utils";
-import { Div } from "vendor/misc/Flex";
+import { Box } from "vendor/misc/Flex";
 import { Text } from "./Text";
 
 export const Button = (props: ButtonProps) => {
@@ -22,14 +22,14 @@ export const Button = (props: ButtonProps) => {
     }
   };
   return (
-    <Div column {...props} rounded={5} background="--black-dark" padding={15}>
+    <Box column {...props} rounded={5} background="--black-dark" padding={15}>
       <Text variant="large" color="white">
         <button onSubmit={() => props.onEvent("submit")} style={styling.submitButton}>
           {props.children}
         </button>
-        <Div style={styling.pendingButton}>*</Div>
+        <Box style={styling.pendingButton}>*</Box>
       </Text>
-    </Div>
+    </Box>
   );
 };
 

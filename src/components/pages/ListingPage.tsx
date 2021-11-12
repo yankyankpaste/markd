@@ -5,7 +5,7 @@ import { H, Text } from "components/resource/controls/Text";
 import { StorageContext, StorageProvider } from "components/service/StorageContext";
 import React, { useContext, useState } from "react";
 import { useForm } from "utils/react-utils";
-import { Div as Box, Status } from "vendor/misc/Flex";
+import { Box, Status } from "vendor/misc/Flex";
 import Portal from "vendor/misc/Portal";
 import { Footer } from "../features/Footer";
 import { Heading, HeadingEvents } from "../features/Heading";
@@ -101,10 +101,10 @@ const EmptyCard = props => {
 const AddCard = props => {
   const [formStatus, formDelegate, onSubmit] = useForm();
 
-  onSubmit(values => {
-    // shout
-    props.onEvent("press submit");
-  });
+  // onSubmit(values => {
+  //   // shout
+  //   props.onEvent("press submit");
+  // });
   return (
     <Portal expand background="black">
       <Box expand middle center>

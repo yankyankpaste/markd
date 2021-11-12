@@ -1,7 +1,7 @@
 import { H, Text } from "components/resource/controls/Text";
 import { Bookmark } from "components/service/StorageContext";
 import React, { useState } from "react";
-import { Div, Status } from "vendor/misc/Flex";
+import { Box, Status } from "vendor/misc/Flex";
 import { Footer } from "./Footer";
 import { Heading } from "./Heading";
 
@@ -17,29 +17,29 @@ export const Listing = (props: ListingPropTypes) => {
 
   return (
     <>
-      <Div column flex={1} gap={10} padding={30} style={{ overflow: "scroll" }}>
+      <Box column flex={1} gap={10} padding={30} style={{ overflow: "scroll" }}>
         {props.items.map(bookmark => (
-          <Div key={bookmark.url} column background="--grey" rounded={10} padding={10}>
+          <Box key={bookmark.url} column background="--grey" rounded={10} padding={10}>
             {/* name */}
 
-            <Div flex={1} padding={20} rounded={10} column>
+            <Box flex={1} padding={20} rounded={10} column>
               <H variant="regular">
                 <a display={{ all: "unset" }}>{bookmark.name}</a>
               </H>
               <Text variant="regular">
                 <a display={{ all: "unset" }}>{bookmark.url}</a>
               </Text>
-            </Div>
+            </Box>
 
             {/* actions */}
 
-            <Div bottom right>
-              <Div padding="5px 20px" gap={10} rounded={20}>
+            <Box bottom right>
+              <Box padding="5px 20px" gap={10} rounded={20}>
                 {/* delete */}
 
-                <Div onClick={() => props.onEvent("press delete bookmark", bookmark)}>
+                <Box onClick={() => props.onEvent("press delete bookmark", bookmark)}>
                   <Icons.Trash2 />
-                </Div>
+                </Box>
 
                 {/* open */}
 
@@ -48,37 +48,37 @@ export const Listing = (props: ListingPropTypes) => {
                 </a>
 
                 {/* favourite, share....  */}
-              </Div>
-            </Div>
-          </Div>
+              </Box>
+            </Box>
+          </Box>
         ))}
-      </Div>
+      </Box>
 
-      <Div height={80}>
-        <Div center expand padding={10}>
-          <Div background="white" rounded={20} padding="10px 10px" center gap={10}>
-            <Div disabled middle center background="--grey" padding={20} rounded={20}>
+      <Box height={80}>
+        <Box center expand padding={10}>
+          <Box background="white" rounded={20} padding="10px 10px" center gap={10}>
+            <Box disabled middle center background="--grey" padding={20} rounded={20}>
               <Icons.ArrowLeft />
-            </Div>
+            </Box>
             {/* Page slot 1 */}
-            <Div middle center background="--grey" padding={20} rounded={20} minWidth={60}>
+            <Box middle center background="--grey" padding={20} rounded={20} minWidth={60}>
               <Text variant="large">1</Text>
-            </Div>
+            </Box>
             {/* Page slot 2 */}
-            <Div hidden middle center background="--grey" padding={20} rounded={20}>
+            <Box hidden middle center background="--grey" padding={20} rounded={20}>
               <Text variant="large">1</Text>
-            </Div>
+            </Box>
             {/* Page slot 3  */}
-            <Div hidden middle center background="--grey" padding={20} rounded={20}>
+            <Box hidden middle center background="--grey" padding={20} rounded={20}>
               <Text variant="large">1</Text>
-            </Div>
+            </Box>
             {/* next prev arrows */}
-            <Div disabled middle center background="--grey" padding={20} rounded={20}>
+            <Box disabled middle center background="--grey" padding={20} rounded={20}>
               <Icons.ArrowRight />
-            </Div>
-          </Div>
-        </Div>
-      </Div>
+            </Box>
+          </Box>
+        </Box>
+      </Box>
     </>
   );
 };

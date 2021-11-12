@@ -1,6 +1,6 @@
 import { H, SpecCard, Text } from "components/resource/controls/Text";
 import React, { useContext, useRef, useState } from "react";
-import { Div } from "vendor/misc/Flex";
+import { Box } from "vendor/misc/Flex";
 import { StorageContext, StorageProvider, useLocalStorage } from "../service/StorageContext";
 import "./App.css";
 import { ListingPage } from "./ListingPage";
@@ -10,7 +10,7 @@ export const App = props => {
 
   return (
     <StorageContext.Provider value={storageContext}>
-      <Div expand background="--black-x-dark">
+      <Box expand background="--black-x-dark">
         {/* welcome page?? */}
         {/* signin page?? */}
 
@@ -18,22 +18,22 @@ export const App = props => {
         {/* for now assuming user has been targetted */}
 
         {status === "deserialising storage" && (
-          <Div expand middle center color="white">
+          <Box expand middle center color="white">
             <Icons.Loader />
             <H variant="large">Firing up</H>
-          </Div>
+          </Box>
         )}
 
         {status === "browser incompatible" && (
-          <Div expand middle center column color="white" gap={20}>
+          <Box expand middle center column color="white" gap={20}>
             <Icons.AlertTriangle />
             <H variant="large">Ahh crap, your browser is incompatible</H>
             <Text variant="large">Localstorage needs to be available in order to use this app.</Text>
-          </Div>
+          </Box>
         )}
 
         {status === "loaded user" && <ListingPage user={targetUser} />}
-      </Div>
+      </Box>
     </StorageContext.Provider>
   );
 };
@@ -71,14 +71,14 @@ function useApp(props) {
 
 const SpecSection = () => {
   return (
-    <Div id="Specimen" row width="100%" padding={40} gap={20} rounded={20} column>
-      <Div>
+    <Box id="Specimen" row width="100%" padding={40} gap={20} rounded={20} column>
+      <Box>
         <H variant="larger" color="white">
           Specimen
         </H>
-      </Div>
+      </Box>
 
-      <Div gap={20}>
+      <Box gap={20}>
         <SpecCard name="Create bookmark"></SpecCard>
 
         <SpecCard name="Headings" hidden>
@@ -96,7 +96,7 @@ const SpecSection = () => {
           <Text variant="small">Small</Text>
           <Text variant="smaller">Smaller</Text>
         </SpecCard>
-      </Div>
-    </Div>
+      </Box>
+    </Box>
   );
 };

@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
-import { Div, Section } from "vendor/misc/Flex";
+import { Box, Section } from "vendor/misc/Flex";
 import { processCssVar, utils } from "utils/utils";
 import * as Icons from "react-feather";
 import { H, Text } from "../resource/controls/Text";
@@ -121,7 +121,7 @@ const useTransiate = status => {
 //   const color = processCssVar(props.color);
 //   const background = processCssVar(props.background);
 //   return (
-//     <Div
+//     <Box
 //       data-button
 //       width={props.size}
 //       height={props.size}
@@ -131,7 +131,7 @@ const useTransiate = status => {
 //       middle
 //     >
 //       {I && <I {...props} size={size} color={color} />}
-//     </Div>
+//     </Box>
 //   );
 // };
 
@@ -152,10 +152,10 @@ const useTransiate = status => {
 // export const NumberInput = (props: typeof NumberInputDP) => {
 //   return (
 //     <>
-//       <Div data-field column left background="--g1" width={60} rounded={5} padding={5} height={40}>
+//       <Box data-field column left background="--g1" width={60} rounded={5} padding={5} height={40}>
 //         <Label>{props.title}</Label>
 //         <LargeText>{props.value}</LargeText>
-//       </Div>
+//       </Box>
 //     </>
 //   );
 // };
@@ -343,22 +343,22 @@ export const CreateBookmarkCard = props => {
   const map = useCreateBookmarkCard(props);
   const { display, delegate } = map;
   return (
-    <Div background="--black-light" rounded={20} expand column padding={20} gap={10}>
+    <Box background="--black-light" rounded={20} expand column padding={20} gap={10}>
       <form {...delegate.form} autoComplete="off" noValidate>
-        <Div column color="white" gap={5}>
+        <Box column color="white" gap={5}>
           <H variant="regular">Add bookmark</H>
           <Text variant="regular">Where the magic happens.</Text>
-        </Div>
-        <Div column>
+        </Box>
+        <Box column>
           <Field name="name" placeholder="Enter bookmark name" required />
           <Field name="url" placeholder="Enter url" />
-        </Div>
-        <Div>
+        </Box>
+        <Box>
           <Button disabled={display.disableSubmit} pending={display.pending}>
             Add
           </Button>
-        </Div>
+        </Box>
       </form>
-    </Div>
+    </Box>
   );
 };
