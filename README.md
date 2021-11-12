@@ -64,10 +64,11 @@ Okey doke,
 
 SImples
 
-1. Get a free API Key at [https://example.com](https://example.com)
 1. Clone the repo
    ```sh
    git clone https://github.com/yankyankpaste/bookmarker.git
+   or
+   git clone git@github.com:yankyankpaste/bookmarker.git
    ```
 1. Install NPM packages
    ```sh
