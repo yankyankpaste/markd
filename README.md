@@ -38,10 +38,10 @@
 
 Lovely stuff, so spent just a few hours over this week on this, managed to only get so far...
 
-- [x] can create bookmark, added to local storage
-- [x] added url validation
-- [x] added pagination (hard to see without many results but wrote this as a self commenting usePagination hook)
+- [x] can create and delete bookmark, NOT edit, added/updated to local storage
 - [x] nearly all components and utils (hooks) are written from ground up incase this was deemed cheating otherwise!
+- [x] custom form building added url validation
+- [x] added pagination (hard to see without many results but wrote this as a self commenting usePagination hook)
 
 Think would be useful to talk through and explain process. I also spent some time in framer to create initial screens. I cant share these easily (bloody accounts) but Ill try showing the most here...
 
