@@ -66,9 +66,9 @@ SImples
 
 1. Clone the repo
    ```sh
-   git clone https://github.com/yankyankpaste/bookmarker.git
+   git clone https://github.com/yankyankpaste/markd.git
    or
-   git clone git@github.com:yankyankpaste/bookmarker.git
+   git clone git@github.com:yankyankpaste/markd.git
    ```
 1. Install NPM packages
    ```sh
