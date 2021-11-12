@@ -34,6 +34,7 @@ export const Button = (props: ButtonProps) => {
     >
       <Text variant="large">
         <button
+          type={props.type}
           onSubmit={() => props.onEvent("submit")}
           onClick={() => props.onEvent("click")}
           style={styling.submitButton}
@@ -50,7 +51,8 @@ const ButtonDefaults = {
   variant: "primary" as "primary" | "secondary",
   onEvent: (type: "submit" | "click", value?) => {},
   pending: false,
-  children: null
+  children: null,
+  type: "button"
 };
 Button.defaultProps = ButtonDefaults;
 type ButtonProps = Partial<typeof ButtonDefaults>;

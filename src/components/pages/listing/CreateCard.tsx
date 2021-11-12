@@ -46,7 +46,9 @@ export const CreateCard = props => {
                   dismiss
                 </Button>
 
-                <Button disabled={formStatus !== "valid"}>Add</Button>
+                <Button type="submit" disabled={formStatus !== "valid"}>
+                  Add
+                </Button>
               </Box>
             </Box>
           </form>
