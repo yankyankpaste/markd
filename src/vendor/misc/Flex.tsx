@@ -1,39 +1,14 @@
-// @ts-nocheck
+/**
+ * @page
+ * So essentially this is a copy and tidy from previous work, find this is easier than css when needing speeddddddddddd
+ */
 import * as React from "react";
 import styled from "styled-components";
 import Portal from "./Portal";
 import classNames from "classnames";
 import { createElement } from "react";
-import { useSpring, animated, interpolate, useTransition, config, useChain } from "react-spring";
-// import { motion } from "framer-motion";
 
-const withDynamicTag = Component => {
-  const bucket = Object.create(null);
-
-  const DynamicTag = props => {
-    const { tag } = props;
-
-    if (typeof tag !== "string" || !styled.hasOwnProperty(tag)) {
-      return createElement(Component, props);
-    }
-
-    if (bucket[tag] === undefined) {
-      bucket[tag] = Component.withComponent(tag);
-    }
-
-    return createElement(bucket[tag], props);
-  };
-
-  const name = Component.displayName || Component.constructor.name;
-
-  if (name) {
-    DynamicTag.displayName = `DynamicTag(${name})`;
-  }
-
-  return DynamicTag;
-};
-
-const StackContainer = styled.div.attrs(props => ({
+const Stack = styled.div.attrs(props => ({
   style: {
     width: props.expand ? "100%" : props.width || "auto",
     height: props.expand ? "100%" : props.height || "auto",
@@ -42,7 +17,6 @@ const StackContainer = styled.div.attrs(props => ({
     }) `
   }
 }))`
-  // Flex styling
   display: flex;
 
   flex-direction: ${props => (props.column ? "column" : "row")};
@@ -206,24 +180,10 @@ const flexChild = (value, i) => `> *:nth-child(${i + 1}){
     flex: ${value} 1 auto;
 }`;
 
-const axis1 = ({ left, right, center, stretchItems }, isCross?) => {
-  if (left) return "flex-start";
-  if (right) return "flex-end";
-  if (center) return "center";
-  if (isCross) return "stretch";
-};
-
-const axis2 = ({ middle, top, bottom }, isCross?) => {
-  if (top) return "flex-start";
-  if (middle) return "center";
-  if (bottom) return "flex-end";
-  if (isCross) return "stretch";
-};
-
 const parseDimension = (val = "auto") => (typeof val !== "string" ? val + "px" : val);
 
 // @ts-ignore
-const StackInner = React.forwardRef<any, any>((props, ref) => {
+export const Box = React.forwardRef<any, any>((props, ref) => {
   const css = classNames(props.className);
   const rest = { ...props };
   if (props.aria) {
@@ -234,19 +194,13 @@ const StackInner = React.forwardRef<any, any>((props, ref) => {
     rest.role = "region";
   }
   // @ts-ignore
-  return <StackContainer {...rest} className={css} ref={ref} />;
+  return <Stack {...rest} className={css} ref={ref} />;
 });
 
-StackContainer.defaultProps = {};
-// @ts-ignore
-const Flex = StackInner;
-
-export const Box = Flex;
+export default Box;
 
 export const Status = props => (!!props.display ? props.children || null : null);
 
 export const Component = props => props.children || null;
 
 // export const mFlex = motion(Flex);
-
-export default Flex;

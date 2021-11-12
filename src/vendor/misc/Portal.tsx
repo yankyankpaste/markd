@@ -15,6 +15,9 @@ const Portal = props => {
         props.background && props.background.startsWith("--") ? `var(${props.background})` : props.background
       };`
     );
+    containerEl.addEventListener("click", () => {
+      if (props.onClick) props.onClick();
+    });
     return function cleanup() {
       document.body.removeChild(containerEl);
     };

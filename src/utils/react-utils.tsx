@@ -9,7 +9,7 @@ export const useOnce = (callback, ...args) => {
  * Tasty little map event hook
  * @returns
  */
-function useMapEvents<events>() {
+export function useMapEvents<events>() {
   type Callback = (name: string, meta?: any) => void;
   type GroupCallback = (groupName: string, name: string, meta?: any) => void;
   let groupCallbacks: Callback[] = [];
@@ -40,7 +40,8 @@ export const useUpdateRender = () => {
 
 export const useForm = () => {
   const ref = useRef<HTMLFormElement>();
-  type status = "initial" | "valid" | "invalid"; //  | "sending" | "sendError" | "sent"
+  const callbackRef = useRef(values => {});
+  type status = "initial" | "valid" | "invalid";
 
   const [status, setStatus] = useState<status>("initial");
 
@@ -64,10 +65,53 @@ export const useForm = () => {
         event.persist();
         event.preventDefault();
         event.stopPropagation();
+        if (status === "valid") {
+          const values = {};
+          ref.current.querySelectorAll("input").forEach(input => {
+            if (input.type === "checked") values[input.name] = input.checked;
+            values[input.name] = input.value;
+          });
+          if (callbackRef.current) callbackRef.current(values);
+        }
       },
       ref
-    } as FormElementProps
+    } as FormElementProps,
+    (callback: (inputs: { [name: string]: string }) => void) => {
+      callbackRef.current = callback;
+    }
   ] as const;
 };
 type FormElementProps = React.DetailedHTMLProps<React.FormHTMLAttributes<HTMLFormElement>, HTMLFormElement>;
 type InputElementProps = React.HTMLProps<HTMLInputElement>;
+
+/** So quick creation of pagination, slicing for now on return the items for current page.... could improve on slice every call... */
+export const usePagination = (items = [], initialPage = 1, range = 5, perPage = 20) => {
+  const [currentPage, setCurrentPage] = useState(initialPage);
+  const [lastPage, setLastPage] = useState(1);
+  const itemCount = items.length;
+
+  useEffect(() => {
+    setLastPage(Math.ceil(itemCount / perPage));
+  }, [itemCount]);
+
+  const pageRange = Array(range)
+    .fill(1)
+    .map((v, i) => {
+      const rangeStart = Math.floor((currentPage - 1) / range) * range;
+      return rangeStart + (i + 1);
+    })
+    .filter(index => index <= lastPage);
+
+  return [
+    items.slice((currentPage - 1) * perPage, currentPage * perPage),
+    currentPage,
+    pageRange,
+    lastPage,
+    /** next page */
+    () => setCurrentPage(Math.min(currentPage + 1, lastPage)),
+    /** previous page */
+    () => setCurrentPage(Math.max(currentPage - 1, 1)),
+    /** set page  */
+    value => setCurrentPage(value)
+  ] as const;
+};

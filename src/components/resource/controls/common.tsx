@@ -5,11 +5,11 @@ import { Box } from "vendor/misc/Flex";
 import { Text } from "./Text";
 
 export const Button = (props: ButtonProps) => {
-  const display = {
-    submitButtonVisible: !props.pending,
-    pendingButtonVisible: props.pending
-  };
   const styling = {
+    box: {
+      background: props.variant === "primary" ? "--black-dark" : "transparent",
+      color: props.variant === "primary" ? "white" : "--black-dark"
+    },
     submitButton: {
       all: "inherit",
       visibility: props.pending ? "hidden" : "visible"
@@ -21,10 +21,23 @@ export const Button = (props: ButtonProps) => {
       visibility: !props.pending ? "hidden" : "visible"
     }
   };
+  const { onEvent, pending, ...rest } = props;
   return (
-    <Box column {...props} rounded={5} background="--black-dark" padding={15}>
-      <Text variant="large" color="white">
-        <button onSubmit={() => props.onEvent("submit")} style={styling.submitButton}>
+    <Box
+      flex={0}
+      column
+      {...rest}
+      rounded={10}
+      background={styling.box.background}
+      color={styling.box.color}
+      padding={15}
+    >
+      <Text variant="large">
+        <button
+          onSubmit={() => props.onEvent("submit")}
+          onClick={() => props.onEvent("click")}
+          style={styling.submitButton}
+        >
           {props.children}
         </button>
         <Box style={styling.pendingButton}>*</Box>
@@ -34,8 +47,10 @@ export const Button = (props: ButtonProps) => {
 };
 
 const ButtonDefaults = {
-  onEvent: (type: "submit", value?) => {},
+  variant: "primary" as "primary" | "secondary",
+  onEvent: (type: "submit" | "click", value?) => {},
   pending: false,
   children: null
 };
+Button.defaultProps = ButtonDefaults;
 type ButtonProps = Partial<typeof ButtonDefaults>;

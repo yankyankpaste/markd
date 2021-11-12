@@ -8,17 +8,21 @@ export const H = ({ styles = {}, variant = "regular" as keyof typeof hStyles, ..
 };
 
 const hStyles = {
-  regular: { font: "var(--heading)" },
-  large: { font: "var(--heading-large)" },
-  larger: { font: "var(--heading-larger)" },
-  small: { font: "var(--heading-small)" },
+  regular: { font: "var(--heading)", letterSpacing: -1 },
+  large: { font: "var(--heading-large)", letterSpacing: -1 },
+  larger: { font: "var(--heading-larger)", letterSpacing: -1 },
+  small: { font: "var(--heading-small)", letterSpacing: -0.5 },
   smaller: { font: "var(--heading-smaller)" }
 };
 
 export const Text = ({ styles = {}, variant = "regular" as keyof typeof textStyles, ...rest }) => {
   const s = textStyles[variant] || {};
   s.color = cssVar(rest.color) || "auto";
-  return <div style={{ ...s, ...styles }}>{rest.children}</div>;
+  return (
+    <Box {...rest} style={{ ...s, ...styles }}>
+      {rest.children}
+    </Box>
+  );
 };
 
 const textStyles = {

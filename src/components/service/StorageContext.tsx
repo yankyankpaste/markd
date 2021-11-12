@@ -1,35 +1,47 @@
+import { createBatcher } from "framer-motion";
 import React, { useState } from "react";
 import { Users as UsersPool } from "react-feather";
+import { useMapEvents } from "utils/react-utils";
 
 export const StorageContext = React.createContext({
   users: {},
   bookmarkPool: {},
-  command: null as Command
+  command: null as Command,
+  status: "initial" as StorageStatus,
+  onUpdate: (name, value?) => {}
 });
 
 export const useLocalStorage = () => {
-  type StorageStatus = "initial" | "retrieving" | "initialising" | "initialised" | "storing" | "idle" | "not supported";
-
-  const [status, setStorageStatus] = useState<StorageStatus>("initial");
+  const [status, setStatus] = useState<StorageStatus>("initial");
 
   const [userData, setUserData] = useState<UsersPool>({});
 
   const [bookmarkData, setBookmarkData] = useState<BookmarkPool>({});
 
+  const [onEvent, onEvents, sendEvents] = useMapEvents();
+
   switch (status) {
     case "initial":
       if ("localStorage" in window) {
-        setStorageStatus("retrieving");
+        setStatus("retrieving");
       } else {
-        setStorageStatus("not supported");
+        setStatus("not supported");
       }
       break;
 
     case "retrieving": {
-      const users = localStorage.getItem("users");
-      const bookmarks = localStorage.getItem("bookmarks");
-      if (!users || !bookmarks) setStorageStatus("initialising");
-      setStorageStatus("initialising");
+      try {
+        const users = localStorage.getItem("users");
+        const bookmarks = localStorage.getItem("bookmarks");
+        if (!users || !bookmarks) setStatus("initialising");
+        else {
+          setUserData(JSON.parse(users));
+          setBookmarkData(JSON.parse(bookmarks));
+          setStatus("initialised");
+        }
+      } catch (e) {
+        setStatus("corrupt");
+      }
       break;
     }
 
@@ -37,50 +49,13 @@ export const useLocalStorage = () => {
       // fake it till you make it...
       const users: UsersPool = { bananaMan: { avatar: "banana", user: "bananaMan" } };
       const bookmark: BookmarkPool = {
-        bananaMan: [
-          {
-            name: "bbc",
-            url: "https://bbc.co.uk"
-          },
-          {
-            name: "bbc",
-            url: "https://bbc.co.uk"
-          },
-          {
-            name: "bbc",
-            url: "https://bbc.co.uk"
-          },
-
-          {
-            name: "bbc",
-            url: "https://bbc.co.uk"
-          },
-
-          {
-            name: "bbc",
-            url: "https://bbc.co.uk"
-          },
-
-          {
-            name: "bbc",
-            url: "https://bbc.co.uk"
-          },
-
-          {
-            name: "bbc",
-            url: "https://bbc.co.uk"
-          },
-          {
-            name: "bbc",
-            url: "https://bbc.co.uk"
-          }
-        ]
+        bananaMan: []
       };
       localStorage.setItem("users", JSON.stringify(users));
-      localStorage.setItem("bookma", JSON.stringify(bookmark));
+      localStorage.setItem("bookmarks", JSON.stringify(bookmark));
       setUserData(users);
       setBookmarkData(bookmark);
-      setStorageStatus("initialised");
+      setStatus("initialised");
       break;
     }
 
@@ -88,28 +63,78 @@ export const useLocalStorage = () => {
       break;
     }
 
-    case "storing": {
+    case "syncing": {
+      try {
+        localStorage.setItem("users", JSON.stringify(userData));
+        localStorage.setItem("bookmarks", JSON.stringify(bookmarkData));
+        setStatus("synced");
+        sendEvents("storage")("synced");
+      } catch (e) {
+        setStatus("corrupt");
+      }
       break;
     }
+
+    case "synced":
+      break;
+
+    case "corrupt":
+      break;
   }
 
-  const onCommand: Command = (name, value) => {
+  const onCommand: Command = (name, meta) => {
     switch (name) {
       case "get bookmarks for user": {
-        const user = value as string;
+        const user = meta as string;
         return bookmarkData[user];
-        break;
+      }
+      case "add bookmark": {
+        const bookmark = meta.value as any;
+        const user = meta.user;
+        const userBookmarks = [...bookmarkData[user]];
+        //enrich with latest date
+        bookmark.date = new Date().toISOString();
+        userBookmarks.push(bookmark);
+        setBookmarkData({ ...bookmarkData, [user]: userBookmarks });
+        setStatus("syncing");
+        return userBookmarks;
+      }
+
+      case "delete bookmark": {
+        const bookmark = meta.value as any;
+        const user = meta.user;
+        const userBookmarks = [...bookmarkData[user]].filter(b => b.date !== bookmark.date);
+        const update = { ...bookmarkData, [user]: userBookmarks };
+        setBookmarkData(update);
+        setStatus("syncing");
+        return userBookmarks;
       }
     }
   };
 
-  const contextData = { users: userData, bookmarkPool: bookmarkData, command: onCommand };
+  const contextData = { users: userData, bookmarkPool: bookmarkData, command: onCommand, status, onUpdate: onEvent };
   return [status, contextData] as const;
 };
 
 // Types
 
-type ProviderRequests = "get bookmarks for user" | "update user" | "add bookmark" | "update bookmark";
+type StorageStatus =
+  | "initial"
+  | "retrieving"
+  | "initialising"
+  | "initialised"
+  | "syncing"
+  | "synced"
+  | "idle"
+  | "not supported"
+  | "corrupt";
+
+type ProviderRequests =
+  | "get bookmarks for user"
+  | "update user"
+  | "add bookmark"
+  | "update bookmark"
+  | "delete bookmark";
 
 type UsersPool = {
   [name: UserUuid]: {
@@ -125,6 +150,7 @@ type BookmarkPool = {
 export type Bookmark = {
   name: string;
   url: link;
+  date: string;
 };
 
 type UserUuid = string;
