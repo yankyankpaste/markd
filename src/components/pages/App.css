@@ -30,7 +30,7 @@
   --heading-small: 700 20px/1 "sans";
   --heading-smaller: 700 16px/1 "sans";
 
-  --text: 500 12px/1 "sans";
+  --text: 500 14px/1 "sans";
   --text-large: 700 16px/0.8 "sans";
   --text-larger: 700 18px/1 "sans";
   --text-small: 500 10px/1 "sans";
@@ -90,4 +90,12 @@ main {
   padding: 0;
   margin: 0;
   font-family: "sans", sans;
+}
+
+:global(.portal) {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0px;
+  left: 0px;
 }

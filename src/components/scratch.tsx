@@ -7,16 +7,13 @@ import { SelectionBox } from "./Selection";
 import { type } from "os";
 import { wrap } from "module";
 
-
-
-
 const useMachine = () => {
   type tuple = [token, number];
   type token = { hash: number; state: any };
   const tuplesRef = useRef([] as tuple[]);
   const onEnter = (tokenRef: tokenRef, callback) => {
     const token = tokenRef.current as token;
-    const stateTuple = tuplesRef.current.find((tuple) => tuple[0] === token);
+    const stateTuple = tuplesRef.current.find(tuple => tuple[0] === token);
     if (stateTuple && stateTuple[1] !== token.state) {
       stateTuple[1] = token.state;
       callback(isValid(token), get(token));
@@ -31,14 +28,12 @@ const useMachine = () => {
     return () => getStatus() === state;
   };
 
-  const get = (token) => {
-    const tuple = tuplesRef.current.find((tuple) => tuple[0] === token);
+  const get = token => {
+    const tuple = tuplesRef.current.find(tuple => tuple[0] === token);
     return () => tuple[0]["state"];
   };
   return [onEnter] as const;
 };
-
-
 
 const useStateChange = (state, setter) => {
   // take in state
@@ -57,7 +52,7 @@ const useStateChange = (state, setter) => {
 
   const tuplesRef = useRef([] as tuple[]);
 
-  const onEnter = (callback) => {
+  const onEnter = callback => {
     // so if callback doesnt exist instorage, call as its first time
     // so idea is only call once for the latest state change
     if (statePhase.current === "entering") {
@@ -66,13 +61,13 @@ const useStateChange = (state, setter) => {
     }
   };
 
-  const onLeave = (callback) => {
-    // so unlike onenter, this is a hijack over set state to call on leave 
+  const onLeave = callback => {
+    // so unlike onenter, this is a hijack over set state to call on leave
     // on leave gets called
     // we store the current state
     // when we call this hook again, we go through the stored on leaves and call them
     // problem: what do you want to achieve in a stale function?
-    
+
     // on leave gets called
     // we call it only if setstate has been called since hook was invoked
     // would have to do something with hijacking the setstate function
@@ -84,134 +79,41 @@ const useStateChange = (state, setter) => {
     }
   };
 
-  const get = (token) => {
-    const tuple = tuplesRef.current.find((tuple) => tuple[0] === token);
+  const get = token => {
+    const tuple = tuplesRef.current.find(tuple => tuple[0] === token);
     return () => tuple[0]["state"];
   };
   return [onEnter, onLeave] as const;
 };
 
-function useToken<T,U>([state,setState]: [T,U]) {
+function useToken<T, U>([state, setState]: [T, U]) {
   const [ownState, set] = useState(state);
   const tokenRef = useRef({ hash: 0, state: state });
   const currentHash = tokenRef.current.hash;
-  const setter = (args) => {
-    if(currentHash !== tokenRef.current.hash){
-      console.log('hmm stale call to setState');
+  const setter = args => {
+    if (currentHash !== tokenRef.current.hash) {
+      console.log("hmm stale call to setState");
       return;
     }
     ++tokenRef.current.hash;
     set(args);
   };
   tokenRef.current.state = state;
-  const get = ()=> tokenRef.current.state;
+  const get = () => tokenRef.current.state;
   return [state, setter as U, get, tokenRef] as const;
 }
 
-const useTransiate = (status)=> {
-  
-  const onEnter = (c)=> {
+const useTransiate = status => {
+  const onEnter = c => {
     c();
     // now if state hasnt changed since last time, dont call
-  }
-  const onLeave = ()=> {
+  };
+  const onLeave = () => {
     // now if state has changed since last time, call this, but just once
-  }
-  const onDone = ()=> {}
-  return [onEnter, onLeave, onDone]
-}
-
-
-
-
-
-const Button = (props: ButtonProps) => {
-  const display = {
-    submitButtonVisible: !props.pending,
-    pendingButtonVisible: props.pending,
   };
-  const styling = {
-    submitButton: {
-      all: "inherit",
-      visibility: props.pending ? "hidden" : "visible",
-    },
-    pendingButton: {
-      all: "inherit",
-      position: "absolute",
-      top: 0,
-      visibility: !props.pending ? "hidden" : "visible",
-    },
-  };
-  return (
-    <Div column {...props} rounded={5} background="--black-dark" padding={15}>
-      <Text variant="large" color="white">
-        <button onSubmit={() => props.onEvent("submit")} style={styling.submitButton}>
-          {props.children}
-        </button>
-        <Div style={styling.pendingButton}>*</Div>
-      </Text>
-    </Div>
-  );
+  const onDone = () => {};
+  return [onEnter, onLeave, onDone];
 };
-
-const ButtonDefaults = {
-  onEvent: (type: "submit", value?) => {},
-  pending: false,
-  children: null,
-};
-type ButtonProps = Partial<typeof ButtonDefaults>;
-
-/**
- *
- * @component
- *
- */
-export const Field = React.forwardRef((props: TextFieldPropTypes, ref) => {
-  const [status, value, inputProps] = useInput();
-
-  return (
-    <Div column gap={5} color="white">
-      <Div padding={5}>
-        <Text>
-          <label htmlFor={props.name} style={{ all: "inherit" }}>
-            {props.name}
-            {value}
-          </label>
-        </Text>
-        <Div flex={1} right>
-          <Icons.AlertCircle size={20} opacity={Number(status === "input invalid")} />
-        </Div>
-      </Div>
-      <Div column height={40} padding={10} background="black" rounded={10}>
-        <Text>
-          <input
-            id={props.name}
-            placeholder={props.placeholder}
-            style={{ all: "inherit" }}
-            required={props.required}
-            {...inputProps}
-          />
-        </Text>
-      </Div>
-    </Div>
-  );
-});
-
-const FieldDefaults = {
-  id: null,
-  name: null as string,
-  placeholder: null as string,
-  onEvent: (type, value?) => {},
-  required: false,
-};
-
-Field.defaultProps = FieldDefaults;
-type TextFieldPropTypes = typeof FieldDefaults;
-type FormElementProps = React.DetailedHTMLProps<
-  React.FormHTMLAttributes<HTMLFormElement>,
-  HTMLFormElement
->;
-type InputElementProps = React.HTMLProps<HTMLInputElement>;
 
 // export const Icon = (props: Partial<typeof IconDefaults>) => {
 //   const I = Icons[props.name] || null;
@@ -274,9 +176,9 @@ const useForm = () => {
   return [
     status,
     {
-      onChange: (event) => {
+      onChange: event => {
         event.persist();
-        setStatus((status) => {
+        setStatus(status => {
           switch (status) {
             case "initial":
             case "valid":
@@ -287,12 +189,12 @@ const useForm = () => {
           }
         });
       },
-      onSubmit: (event) => {
+      onSubmit: event => {
         event.persist();
         event.preventDefault();
         event.stopPropagation();
 
-        setStatus((status) => {
+        setStatus(status => {
           switch (status) {
             case "initial":
             case "valid":
@@ -302,8 +204,8 @@ const useForm = () => {
           }
         });
       },
-      ref,
-    } as FormElementProps,
+      ref
+    } as FormElementProps
   ] as const;
 };
 
@@ -318,9 +220,9 @@ const useInput = () => {
     status,
     value,
     {
-      onChange: (event) => {
+      onChange: event => {
         event.persist();
-        setStatus((status) => {
+        setStatus(status => {
           switch (status) {
             case "initial":
             case "input valid":
@@ -333,12 +235,11 @@ const useInput = () => {
           }
         });
       },
-      ref,
-    } as InputElementProps,
+      ref
+    } as InputElementProps
   ] as const;
 };
 
- 
 type tokenRef = React.MutableRefObject<{
   hash: number;
   state: any;
@@ -347,7 +248,7 @@ type tokenRef = React.MutableRefObject<{
 function useStatus<S>(initialState) {
   const [state, set] = useState<S>(initialState);
   const tokenRef = useRef({ hash: 0, state: state });
-  const setState = (args) => {
+  const setState = args => {
     ++tokenRef.current.hash;
     set(args);
   };
@@ -359,9 +260,7 @@ const useEvents = () => {
   return [] as const;
 };
 
-
-
-const useAddBookmark = (props) => {
+const useAddBookmark = props => {
   type status = "initial" | "valid" | "invalid" | "sending" | "sendError" | "sent";
 
   const [status, setStatus] = useToken(useState<status>("initial"));
@@ -382,16 +281,14 @@ const useAddBookmark = (props) => {
           break;
       }
       // first entry, call first time
-      onEnter(()=> {
-
-      })
+      onEnter(() => {});
 
       // first entry, wont call as status hasnt changed
       // second entry, status not changing so not called
       // third entry, now the status has changed, this wont be entrant anyways
-      // on third entry, we were aware of the last callback made in previous frame so 
+      // on third entry, we were aware of the last callback made in previous frame so
       // call this, we need to know the current state over stale values...?
-      
+
       onLeave(async (from, into, valid) => {
         console.log("a");
       });
@@ -407,7 +304,7 @@ const useAddBookmark = (props) => {
       break;
 
     case "sending":
-      onEnter(async (valid) => {
+      onEnter(async valid => {
         await doWait();
         // if (valid()) setStatus("sent");
       });
@@ -434,15 +331,15 @@ const useAddBookmark = (props) => {
     status,
     display: {
       disableSubmit: ["initial", "invalid"].includes(formStatus),
-      pending: ["sending"].includes(formStatus),
+      pending: ["sending"].includes(formStatus)
     },
     styling: {},
     delegate: {
-      form: formDelegate,
-    },
+      form: formDelegate
+    }
   };
 };
-export const CreateBookmarkCard = (props) => {
+export const CreateBookmarkCard = props => {
   const map = useCreateBookmarkCard(props);
   const { display, delegate } = map;
   return (

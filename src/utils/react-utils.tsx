@@ -32,3 +32,42 @@ function useMapEvents<events>() {
     }
   ] as const;
 }
+
+export const useUpdateRender = () => {
+  const [, setUpdate] = useState(null);
+  return [() => setUpdate({})] as const;
+};
+
+export const useForm = () => {
+  const ref = useRef<HTMLFormElement>();
+  type status = "initial" | "valid" | "invalid"; //  | "sending" | "sendError" | "sent"
+
+  const [status, setStatus] = useState<status>("initial");
+
+  return [
+    status,
+    {
+      onChange: event => {
+        event.persist();
+        setStatus(status => {
+          switch (status) {
+            case "initial":
+            case "valid":
+            case "invalid":
+              return ref.current?.checkValidity() ? "valid" : "invalid";
+            default:
+              return status;
+          }
+        });
+      },
+      onSubmit: event => {
+        event.persist();
+        event.preventDefault();
+        event.stopPropagation();
+      },
+      ref
+    } as FormElementProps
+  ] as const;
+};
+type FormElementProps = React.DetailedHTMLProps<React.FormHTMLAttributes<HTMLFormElement>, HTMLFormElement>;
+type InputElementProps = React.HTMLProps<HTMLInputElement>;

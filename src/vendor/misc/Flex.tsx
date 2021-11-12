@@ -139,14 +139,6 @@ const StackContainer = styled.div.attrs(props => ({
         : "null"};
   }
 
-  > *:first-child {
-    margin-left: ${props => (props.gap ? "0px" : "null")};
-  }
-
-  > *:last-child {
-    margin-right: ${props => (props.gap ? "0px" : "null")};
-  }
-
   border-radius: ${props => (props.rounded ? parseDimension(props.rounded) : 0)};
 
   padding: ${props => (props.padding ? parseDimension(props.padding) : 0)};
@@ -156,7 +148,33 @@ const StackContainer = styled.div.attrs(props => ({
   box-shadow: ${props => (props.shadow ? `0px 4px ${props.shadow}px 1px  rgba(0,0,0,0.1)` : "none")};
 
   ${props => disabled(props)}
+
+  ${props => gap(props)}
 `;
+
+const gap = props => {
+  if (props.gap && props.column) {
+    return `
+    > *:first-child {
+      margin-top: 0;
+    }
+  
+    > *:last-child {
+      margin-bottom: 0;
+    }
+    `;
+  } else if (props.gap) {
+    return `
+    > *:first-child {
+      margin-left: 0;
+    }
+  
+    > *:last-child {
+      margin-right: 0;
+    }
+    `;
+  }
+};
 
 const disabled = props => {
   if (props.disabled) {

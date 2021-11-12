@@ -21,29 +21,33 @@ export const Listing = (props: ListingPropTypes) => {
         {props.items.map(bookmark => (
           <Div key={bookmark.url} column background="--grey" rounded={10} padding={10}>
             {/* name */}
+
             <Div flex={1} padding={20} rounded={10} column>
               <H variant="regular">
                 <a display={{ all: "unset" }}>{bookmark.name}</a>
               </H>
               <Text variant="regular">
-                <a display={{ all: "unset" }}>{bookmark.url}ssssssssssss</a>
+                <a display={{ all: "unset" }}>{bookmark.url}</a>
               </Text>
             </Div>
 
             {/* actions */}
+
             <Div bottom right>
               <Div padding="5px 20px" gap={10} rounded={20}>
                 {/* delete */}
+
                 <Div onClick={() => props.onEvent("press delete bookmark", bookmark)}>
                   <Icons.Trash2 />
                 </Div>
-                {/* share */}
+
+                {/* open */}
 
                 <a href={bookmark.url} target="_blank" display={{ all: "unset" }}>
                   <Icons.ExternalLink />
                 </a>
 
-                {/* favourite */}
+                {/* favourite, share....  */}
               </Div>
             </Div>
           </Div>
@@ -77,11 +81,6 @@ export const Listing = (props: ListingPropTypes) => {
       </Div>
     </>
   );
-};
-
-const useListing = (props: ListingPropTypes) => {
-  type Status = "initial" | "empty" | "items" | "error";
-  return {};
 };
 
 const ListingDefaultProps = {

@@ -6,6 +6,8 @@ const Portal = props => {
   useEffect(() => {
     document.body.appendChild(containerEl);
     containerEl.id = "portal";
+    if (props.expand) containerEl.classList.add("portal");
+    containerEl.classList.add(props.className);
     containerEl.classList.add(props.modal && "modal");
     containerEl.setAttribute(
       "style",
