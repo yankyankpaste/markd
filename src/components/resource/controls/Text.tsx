@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { cssVar } from "utils/utils";
-import Box from "vendor/misc/Flex";
+import Box from "vendor/misc/Box";
 
 export const H = ({ styles = {}, variant = "regular" as keyof typeof hStyles, ...rest }) => {
   const s = hStyles[variant] || {};

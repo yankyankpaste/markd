@@ -1,6 +1,6 @@
 import { H, SpecCard, Text } from "components/resource/controls/Text";
 import React, { useContext, useRef, useState } from "react";
-import { Box } from "vendor/misc/Flex";
+import { Box } from "vendor/misc/Box";
 import { StorageContext, useLocalStorage } from "../service/StorageContext";
 import "./App.css";
 import { ListingPage } from "./listing/ListingPage";

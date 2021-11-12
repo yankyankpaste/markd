@@ -1,6 +1,6 @@
 import { H } from "components/resource/controls/Text";
 import React from "react";
-import { Box } from "vendor/misc/Flex";
+import { Box } from "vendor/misc/Box";
 import { CreateBookmarkCard } from "./CreateBookmarkCard";
 
 import * as Icons from "react-feather";

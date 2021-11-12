@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import { AlertCircle } from "react-feather";
 import { useUpdateRender } from "utils/react-utils";
-import { Box } from "vendor/misc/Flex";
+import { Box } from "vendor/misc/Box";
 import { Text } from "./Text";
 
 export const Button = (props: ButtonProps) => {

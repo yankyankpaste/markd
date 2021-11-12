@@ -4,7 +4,7 @@ import { H } from "components/resource/controls/Text";
 import React from "react";
 import { ThumbsUp, X } from "react-feather";
 import { useForm } from "utils/react-utils";
-import { Box } from "vendor/misc/Flex";
+import { Box } from "vendor/misc/Box";
 import Portal from "vendor/misc/Portal";
 
 /** Singleton Internal Components */

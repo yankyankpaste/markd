@@ -1,7 +1,7 @@
 import { H, Text } from "components/resource/controls/Text";
 import { Bookmark } from "components/service/StorageContext";
 import React, { useEffect, useState } from "react";
-import { Box, Status } from "vendor/misc/Flex";
+import { Box, Status } from "vendor/misc/Box";
 import { Footer } from "../../features/Footer";
 import { Heading } from "../../features/Heading";
 

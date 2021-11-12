@@ -1,8 +1,7 @@
 import { StorageContext } from "components/service/StorageContext";
 import React, { useContext, useState } from "react";
 import { useMapEvents } from "utils/react-utils";
-import { Box, Status } from "vendor/misc/Flex";
-import { Footer } from "../../features/Footer";
+import { Box, Status } from "vendor/misc/Box";
 import { Heading } from "../../features/Heading";
 import { CreateCard } from "./CreateCard";
 import { GratitudeBanner } from "./GratitudeBanner";
@@ -22,7 +21,6 @@ export const ListingPage = (props: ListingPropTypes) => {
       {display.noBookmarks && <NoBookmarks onEvent={mapEvents("empty")} />}
       {display.listing && <Listing onEvent={mapEvents("listing")} items={content.filteredList} />}
       {display.createCard && <CreateCard onEvent={mapEvents("bookmark")} />}
-      <Footer />
     </Box>
   );
 };
