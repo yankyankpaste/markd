@@ -1,17 +1,5 @@
  
 
- 
-<!--
-*** I'm using markdown "reference style" links for readability.
-*** Reference links are enclosed in brackets [ ] instead of parentheses ( ).
-*** See the bottom of this document for the declaration of the reference variables
-*** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
-*** https://www.markdownguide.org/basic-syntax/#reference-style-links
--->
- 
-
-
-
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
@@ -55,18 +43,18 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
+[![Product Name Screen Shot][product-screenshot]]()
 
-There are many great README templates available on GitHub; however, I didn't find one that really suited my needs so I created this enhanced one. I want to create a README template so amazing that it'll be the last one you ever need -- I think this is it.
+Lovely stuff, so spent just a few hours over this week on this, managed to only get so far... 
 
-Here's why:
-* Your time should be focused on creating something amazing. A project that solves a problem and helps others
-* You shouldn't be doing the same tasks over and over like creating a README from scratch
-* You should implement DRY principles to the rest of your life :smile:
+- [x] can create bookmark, added to local storage
+- [x] added url validation
+- [x] added pagination (hard to see without many results but wrote this as a self commenting usePagination hook)
+- [x] nearly all components and utils (hooks) are written from ground up incase this was deemed cheating otherwise!
+  
 
-Of course, no one template will serve all projects since your needs may be different. So I'll be adding more in the near future. You may also suggest changes by forking this repo and creating a pull request or opening an issue. Thanks to all the people have contributed to expanding this template!
-
-Use the `BLANK_README.md` to get started.
+Think would be useful to talk through and explain process. I also spent some time in framer to create initial screens. I cant share these easily (bloody accounts) but Ill try showing the most here...
+ 
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -119,6 +107,11 @@ SImples
 - [ ] Add back to top links
  
  
+  
+Here's why:
+*  adding 3d icons that inevitably took a chunk of time, now left out with time constraints in eve!
+ 
+ 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
    
@@ -126,7 +119,7 @@ SImples
 <!-- ACKNOWLEDGMENTS -->
 ## Acknowledgments
 
-Extra plugins used, thats it...!
+Extra plugins used, thats it...! 
 
 * [feather icons](https://feathericons.com/)
 
@@ -136,6 +129,6 @@ Extra plugins used, thats it...!
 
 
 <!-- MARKDOWN LINKS & IMAGES -->
-<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
+ 
 
 [product-screenshot]: images/screenshot.png
