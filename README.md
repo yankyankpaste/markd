@@ -26,9 +26,6 @@
     </li>
     <li><a href="#usage">Usage</a></li>
     <li><a href="#roadmap">Roadmap</a></li>
-    <li><a href="#contributing">Contributing</a></li>
-    <li><a href="#license">License</a></li>
-    <li><a href="#contact">Contact</a></li>
     <li><a href="#acknowledgments">Acknowledgments</a></li>
   </ol>
 </details>
@@ -99,6 +96,17 @@ Here's why:
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
+<!-- UX -->
+
+## UX
+
+Ive uploaded here some crude initial sketches...
+
+[![Product Name Screen Shot][product-screenshot2]]()
+[![Product Name Screen Shot][product-screenshot3]]()
+[![Product Name Screen Shot][product-screenshot4]]()
+[![Product Name Screen Shot][product-screenshot5]]()
+
 <!-- ACKNOWLEDGMENTS -->
 
 ## Acknowledgments
@@ -112,3 +120,7 @@ Extra plugins used, thats it...!
 <!-- MARKDOWN LINKS & IMAGES -->
 
 [product-screenshot]: screenshots/1.png
+[product-screenshot2]: screenshots/2.png
+[product-screenshot3]: screenshots/3.png
+[product-screenshot4]: screenshots/4.png
+[product-screenshot5]: screenshots/5.png
