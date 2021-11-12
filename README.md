@@ -2,7 +2,7 @@
 <br />
 <div align="center">
 
-  <h3 align="center">Bookmarker</h3>
+  <h3 align="center">Markd</h3>
 
   <p align="center">
     An awesome bookmark app!
